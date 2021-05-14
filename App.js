@@ -6,7 +6,7 @@ import HomeScreen from './screens/HomeScreen';
 export default function App() {
   return (
     <View style={styles.container}>
-      <HomeScreen name="Bulbasauro" />
+      <HomeScreen name="Bulbassauro" />
     </View>
   );
 }
