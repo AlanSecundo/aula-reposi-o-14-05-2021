@@ -24,19 +24,34 @@ const styles = StyleSheet.create({
     marginLeft: 90,
     marginTop: 5,
   },
+  background: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%'
+  },
+  pokeCardContent: {
+    padding: 20,
+  },
+  pokeballBg: {
+    width: '145px',
+    height: '125px',
+    position: 'absolute',
+    marginLeft: '180px'
+  }
 });
 
-export default function PokeCard({ name, id }) {
+export default function PokeCard({ name, id, imageUrl }) {
   return (
     <View style={styles.pokeCard}>
-      <View>
-        <Image
-          style={styles.bgBalls}
+      <View style={styles.background}>
+        <Image style={styles.bgBalls}
           source={require("../assets/bg-balls.svg")}
         />
+        <Image style={styles.pokeballBg} source={require("../assets/pokeball-bg.svg")} />
+        <Image style={styles.pokeballBg} source={imageUrl} />
       </View>
-      <View>
-        <Text style={styles.pokeId}>#{id.toString().padStart(3, "0")}</Text>
+      <View style={styles.pokeCardContent}>
+        <Text style={styles.pokeId}>#{id.padStart(3, "0")}</Text>
         <Text style={styles.pokeName}>{name}</Text>
       </View>
     </View>
