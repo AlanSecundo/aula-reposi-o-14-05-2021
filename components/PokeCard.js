@@ -1,9 +1,11 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
+import { getColorByType } from '../helpers/poke-functions';
 
-const styles = StyleSheet.create({
+const styles = pokeType => StyleSheet.create({
   pokeCard: {
-    backgroundColor: "#8BBE8A",
+    backgroundColor: getColorByType(pokeType),
     borderRadius: 10,
     marginTop: 20,
     width: "100%",
@@ -20,6 +22,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: "white",
     fontWeight: 700,
+    textTransform: 'capitalize'
   },
   bgBalls: {
     width: 75,
@@ -48,24 +51,41 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function PokeCard({ name, id, imageUrl }) {
+export default function PokeCard({ name, pokeUrl }) {
+
+    const [pokeId, setPokeId] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [pokeType, setPokeType] = useState('');
+
+   useEffect(() => {
+      axios.get(pokeUrl)
+      .then(response => {
+        setPokeId(response.data.id.toString());
+        setImageUrl(response.data.sprites.other['official-artwork'].front_default);
+        setPokeType(response.data.types[0].type.name);
+      })
+      .catch(error => {
+          console.log(error);
+      });
+   }, []);
+
   return (
-    <View style={styles.pokeCard}>
-      <View style={styles.background}>
+    <View style={styles(pokeType).pokeCard}>
+      <View style={styles().background}>
         <Image
-          style={styles.bgBalls}
+          style={styles().bgBalls}
           source={require("../assets/bg-balls.svg")}
         />
         <Image
-          style={styles.pokeballBg}
+          style={styles().pokeballBg}
           source={require("../assets/pokeball-bg.svg")}
         />
       </View>
-      <View style={styles.pokeCardContent}>
-        <Text style={styles.pokeId}>#{id.padStart(3, "0")}</Text>
-        <Text style={styles.pokeName}>{name}</Text>
+      <View style={styles().pokeCardContent}>
+        <Text style={styles().pokeId}>#{pokeId.padStart(3, "0")}</Text>
+        <Text style={styles().pokeName}>{ name }</Text>
       </View>
-      <Image style={styles.pokemonImage} source={imageUrl} />
+      <Image style={styles().pokemonImage} source={imageUrl} />
     </View>
   );
 }

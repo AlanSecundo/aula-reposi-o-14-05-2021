@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import PokeCard from '../components/PokeCard';
-import PokeList from '../helpers/pokemons';
 import axios from 'axios';
 
 const styles = StyleSheet.create({
@@ -28,15 +27,14 @@ export default function HomeScreen() {
     return (
         <ScrollView style={styles.container}>
             {
-                PokeList.results.map(element => {
+                pokeList.map((element, index) => {
                     return <PokeCard
-                        name={element.name}
-                        id={element.id}
-                        imageUrl={element.image}
-                        key={element.id} />
+                                name={element.name}
+                                pokeUrl={element.url}
+                                key={index} 
+                        />
                 })
             }
-
         </ScrollView>
     );
 }
