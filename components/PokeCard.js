@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
 import { getColorByType } from '../helpers/poke-functions';
 
-const styles = pokeType => StyleSheet.create({
+const cardStyle = pokeType => StyleSheet.create({
   pokeCard: {
     backgroundColor: getColorByType(pokeType),
     borderRadius: 10,
@@ -14,6 +14,9 @@ const styles = pokeType => StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+})
+
+const styles = StyleSheet.create({
   pokeId: {
     fontWeight: "bold",
     color: "rgba(23, 23, 27, 0.6)",
@@ -53,9 +56,9 @@ const styles = pokeType => StyleSheet.create({
 
 export default function PokeCard({ name, pokeUrl }) {
 
-    const [pokeId, setPokeId] = useState('');
+    const [pokeId, setPokeId] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
-    const [pokeType, setPokeType] = useState('');
+    const [pokeType, setPokeType] = useState(null);
 
    useEffect(() => {
       axios.get(pokeUrl)
@@ -70,22 +73,24 @@ export default function PokeCard({ name, pokeUrl }) {
    }, []);
 
   return (
-    <View style={styles(pokeType).pokeCard}>
-      <View style={styles().background}>
+    pokeType !== null ?
+    (<View style={cardStyle(pokeType).pokeCard}>
+      <View style={styles.background}>
         <Image
-          style={styles().bgBalls}
+          style={styles.bgBalls}
           source={require("../assets/bg-balls.svg")}
         />
         <Image
-          style={styles().pokeballBg}
+          style={styles.pokeballBg}
           source={require("../assets/pokeball-bg.svg")}
         />
       </View>
-      <View style={styles().pokeCardContent}>
-        <Text style={styles().pokeId}>#{pokeId.padStart(3, "0")}</Text>
-        <Text style={styles().pokeName}>{ name }</Text>
+      <View style={styles.pokeCardContent}>
+        <Text style={styles.pokeId}>#{pokeId.padStart(3, "0")}</Text>
+        <Text style={styles.pokeName}>{ name }</Text>
       </View>
-      <Image style={styles().pokemonImage} source={imageUrl} />
-    </View>
+      <Image style={styles.pokemonImage} source={imageUrl} />
+    </View>)
+    : null
   );
 }

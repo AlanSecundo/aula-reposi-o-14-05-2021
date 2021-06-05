@@ -15,7 +15,7 @@ export default function HomeScreen() {
     const [pokeList, setPokeList] = useState([]);
 
     useEffect(() => {
-        axios.get('https://pokeapi.co/api/v2/pokemon?limit=100&offset=0')
+        axios.get('https://pokeapi.co/api/v2/pokemon?limit=200&offset=0')
         .then(response => {
             setPokeList(response.data.results)
         })
